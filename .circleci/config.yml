@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  docker:
+    - image: meredithdigops/digops-stacks
+  test:
+    steps:
+      - checkout
+      - run:
+          name: test
+          command: cfn-lint -t template.yml
+
+  deploy:
+    steps:
+      - run:
+          name: Deploy
+          command: digops-stacks change-set ${CIRCLE_BRANCH} change template.yml
